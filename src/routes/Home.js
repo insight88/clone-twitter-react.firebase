@@ -5,23 +5,31 @@ const Home = ({ userObj }) => {
   // * App.js :onAuthStateChanged -> Router.js : AppRouter에서 userObj 전달 -> Home.js
   const [tweet, setTweet] = useState('');
   const [tweets, setTweets] = useState([]);
-  const getTweets = async () => {
-    const nt = await dbService.collection('tweets').get();
-    // * get() method는 collection의 QuerySnapshot을 return
-    nt.forEach((document) => {
-      const tweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setTweets((prev) => [tweetObject, ...prev]);
-    });
-  };
+
+  // const getTweets = async () => {
+  //   const nt = await dbService.collection('tweets').get();
+  //   // * get() method는 collection의 QuerySnapshot을 return
+  //   nt.forEach((document) => {
+  //     const tweetObject = {
+  //       ...document.data(),
+  //       id: document.id,
+  //     };
+  //     setTweets((prev) => [tweetObject, ...prev]);
+  //   });
+  // };
+  // ! not real-time message displaying
+
   useEffect(() => {
-    getTweets();
-    // dbService.collection('tweets').onSnapshot((snapshot) => {
-    //   console.log('new tweet');
-    // });
+    dbService.collection('tweets').onSnapshot((snapshot) => {
+      const tweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTweets(tweetArray);
+    });
   }, []);
+  // ! real-time message displaying
+
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.collection('tweets').add({
