@@ -1,4 +1,4 @@
-import { dbService } from 'fbase';
+import { dbService, storageService } from 'fbase';
 import React, { useState } from 'react';
 
 const Tweet = ({ tweetObj, isOwner }) => {
@@ -9,6 +9,8 @@ const Tweet = ({ tweetObj, isOwner }) => {
     if (ok) {
       await dbService.doc(`tweets/${tweetObj.id}`).delete();
       // ? firestore.doc("path") : path에 존재하는 DocumentReference Object를 가져옴
+      await storageService.refFromURL(tweetObj.attachmentURL).delete();
+      // ? refFromURL('path').delete() : path라는 절대 경로에를 참조한 후 지움
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -44,6 +46,14 @@ const Tweet = ({ tweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{tweetObj.text}</h4>
+          {tweetObj.attachmentURL && (
+            <img
+              src={tweetObj.attachmentURL}
+              width='100px'
+              height='100px'
+              alt=''
+            />
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Tweet</button>
