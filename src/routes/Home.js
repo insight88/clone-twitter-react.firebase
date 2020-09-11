@@ -1,5 +1,6 @@
 import { dbService } from 'fbase';
 import React, { useState, useEffect } from 'react';
+import Tweet from '../components/Tweet';
 
 const Home = ({ userObj }) => {
   // * App.js :onAuthStateChanged -> Router.js : AppRouter에서 userObj 전달 -> Home.js
@@ -21,6 +22,8 @@ const Home = ({ userObj }) => {
 
   useEffect(() => {
     dbService.collection('tweets').onSnapshot((snapshot) => {
+      // ? collection().onSnapshot() : collection에 대한 event listening observer
+      // * event가 발생 시 callback을 실행한 후 결과를 return
       const tweetArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -49,23 +52,39 @@ const Home = ({ userObj }) => {
     } = event;
     setTweet(value);
   };
+  // const onFileEvent = (event) => {
+  //   const {
+  //     target: { files },
+  //   } = event;
+  //   const image = files[0];
+  //   // * form input에 file을 업로드하면 event.target.files에 array로 저장된다
+  //   const reader = new FileReader();
+  //   // * FilreReader API를 활용
+  //   reader.onloadend = (finishEvent) => {
+  //     console.log(finishEvent);
+  //   };
+  //   reader.readAsDataURL(image);
+  // };
   return (
     <div>
       <form onSubmit={onSubmit}>
         <input
           value={tweet}
           onChange={onChange}
-          type="text"
-          placeholder="What are you thinking?"
+          type='text'
+          placeholder='What are you thinking?'
           maxLength={120}
         />
-        <input type="submit" value="tweet" />
+        {/* <input type='file' accept='image/*' onChange={onFileEvent} /> */}
+        <input type='submit' value='tweet' />
       </form>
       <div>
         {tweets.map((tweet) => (
-          <div key={tweet.id}>
-            <h3>{tweet.text}</h3>
-          </div>
+          <Tweet
+            key={tweet.id}
+            tweetObj={tweet}
+            isOwner={tweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>

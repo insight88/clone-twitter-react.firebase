@@ -1,6 +1,10 @@
-import { authService } from 'fbase';
+import {
+  authService
+} from 'fbase';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import {
+  useHistory
+} from 'react-router-dom';
 
 export default () => {
   const history = useHistory();
@@ -8,9 +12,12 @@ export default () => {
     authService.signOut();
     history.push('/');
   };
-  return (
-    <>
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+  return ( <
+    >
+    <
+    button onClick = {
+      onLogOutClick
+    } > Log Out < /button> <
+    />
   );
 };
