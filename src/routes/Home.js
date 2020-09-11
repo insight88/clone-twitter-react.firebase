@@ -7,7 +7,7 @@ const Home = ({ userObj }) => {
   // * App.js :onAuthStateChanged -> Router.js : AppRouter에서 userObj 전달 -> Home.js
   const [tweet, setTweet] = useState('');
   const [tweets, setTweets] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState('');
   // * image 업로드 객체를 나타내는 attachment, image preview를 위한 state
 
   // const getTweets = async () => {
@@ -38,7 +38,7 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    let attachmentURL;
+    let attachmentURL = '';
     // ! 사진 업로드 없이 코멘트만 등록한 경우
     if (attachmentURL !== '') {
       // ! 사진과 코멘트를 같이 등록한 경우
