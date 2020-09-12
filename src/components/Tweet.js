@@ -10,7 +10,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
       await dbService.doc(`tweets/${tweetObj.id}`).delete();
       // ? firestore.doc("path") : path에 존재하는 DocumentReference Object를 가져옴
       await storageService.refFromURL(tweetObj.attachmentURL).delete();
-      // ? refFromURL('path').delete() : path라는 절대 경로에를 참조한 후 지움
+      // ? refFromURL('path').delete() : path라는 절대 경로를 참조한 후 지움
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -33,13 +33,13 @@ const Tweet = ({ tweetObj, isOwner }) => {
         <>
           <form onSubmit={onSubmit}>
             <input
-              type='text'
-              placeholder='Edit your tweet'
+              type="text"
+              placeholder="Edit your tweet"
               value={newTweet}
               required
               onChange={onChange}
             />
-            <input type='submit' value='Update Tweet' />
+            <input type="submit" value="Update Tweet" />
           </form>
           <button onClick={toggleEditing}>Cancel</button>
         </>
@@ -49,9 +49,9 @@ const Tweet = ({ tweetObj, isOwner }) => {
           {tweetObj.attachmentURL && (
             <img
               src={tweetObj.attachmentURL}
-              width='100px'
-              height='100px'
-              alt=''
+              width="100px"
+              height="100px"
+              alt=""
             />
           )}
           {isOwner && (

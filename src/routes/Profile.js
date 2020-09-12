@@ -1,10 +1,11 @@
-import { authService, dbService } from 'fbase';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { authService } from 'fbase';
 import { useHistory } from 'react-router-dom';
 
-export default ({ userObj }) => {
+export default ({ refreshUser, userObj }) => {
   const history = useHistory();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+
   const onLogOutClick = () => {
     authService.signOut();
     history.push('/');
@@ -18,18 +19,21 @@ export default ({ userObj }) => {
   //     .get();
   //   console.log(tweets.docs.map((doc) => doc.data()));
   // };
+
   const onChange = (event) => {
     const {
       target: { value },
     } = event;
     setNewDisplayName(value);
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     if (userObj.displayName !== newDisplayName) {
-      await userObj.upadateProfile({
+      await userObj.updateProfile({
         displayName: newDisplayName,
       });
+      refreshUser();
     }
   };
 
@@ -41,13 +45,13 @@ export default ({ userObj }) => {
       <form onSubmit={onSubmit}>
         <input
           onChange={onChange}
-          type='text'
-          placeholder='Display name'
+          type="text"
+          placeholder="Display name"
           value={newDisplayName}
         />
-        <input type='submit' value='Update Profile' />
+        <input type="submit" value="Update Profile" />
       </form>
-      <button onClick={onLogOutClick}> Log Out </button>{' '}
+      <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
 };
