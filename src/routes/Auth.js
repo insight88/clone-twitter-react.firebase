@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
-
-import React, { useState } from 'react';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faTwitter,
+  faGoogle,
+  faGithub,
+} from '@fortawesome/free-brands-svg-icons';
 import { authService, firebaseInstance } from 'fbase';
 import AuthForm from 'components/AuthForm';
 
@@ -21,14 +26,20 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <div className="authContainer">
+      <FontAwesomeIcon
+        icon={faTwitter}
+        color={'#04AAFF'}
+        size="3x"
+        style={{ marginBottom: 30 }}
+      />
       <AuthForm />
-      <div>
-        <button name="google" onClick={onSocialClick}>
-          Continue with Google
+      <div className="authBtns">
+        <button name="google" onClick={onSocialClick} className="authBtns">
+          Continue with Google <FontAwesomeIcon icon={faGoogle} />
         </button>
-        <button name="github" onClick={onSocialClick}>
-          Continue with Github
+        <button name="github" onClick={onSocialClick} className="authBtns">
+          Continue with Github <FontAwesomeIcon icon={faGithub} />
         </button>
       </div>
     </div>
